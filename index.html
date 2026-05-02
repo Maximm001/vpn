@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VPN Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Блок профиля -->
+        <header class="profile-card glass">
+            <div class="user-info">
+                <img id="user-avatar" src="https://ui-avatars.com/api/?name=User&background=random" alt="Avatar">
+                <div class="user-text">
+                    <h2 id="user-name">Загрузка...</h2>
+                    <p id="user-status" class="status-inactive">Статус: Нет активной подписки</p>
+                </div>
+            </div>
+            <div class="key-container" id="key-container" style="display: none;">
+                <p class="key-label">Ваш ключ (VLESS):</p>
+                <div class="key-box" id="copy-key-btn">
+                    <span id="vpn-key">vless://...</span>
+                    <svg class="copy-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- Основной контент (Тарифы) -->
+        <main class="tariffs-section">
+            <h3>Выберите тариф</h3>
+            <div class="tariffs-grid">
+                
+                <div class="tariff-card glass" data-tariff="1_month" data-price="150">
+                    <div class="tariff-header">
+                        <h4>1 Месяц</h4>
+                    </div>
+                    <div class="tariff-price">
+                        <span class="price-val">150</span>
+                        <span class="price-cur">₽</span>
+                    </div>
+                </div>
+
+                <div class="tariff-card glass recommended" data-tariff="3_months" data-price="400">
+                    <div class="badge">Выгодно</div>
+                    <div class="tariff-header">
+                        <h4>3 Месяца</h4>
+                    </div>
+                    <div class="tariff-price">
+                        <span class="price-val">400</span>
+                        <span class="price-cur">₽</span>
+                    </div>
+                </div>
+
+                <div class="tariff-card glass" data-tariff="12_months" data-price="1200">
+                    <div class="tariff-header">
+                        <h4>1 Год</h4>
+                    </div>
+                    <div class="tariff-price">
+                        <span class="price-val">1200</span>
+                        <span class="price-cur">₽</span>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        
+        <!-- Кнопка оплаты (внизу) -->
+        <div class="bottom-action">
+            <button id="pay-btn" class="main-btn" disabled>Выберите тариф</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
