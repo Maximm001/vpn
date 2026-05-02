@@ -3,26 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VPN Mini App</title>
+    <title>TVPN</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Фоновые элементы для красоты -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
     <div class="app-container">
         <!-- Блок профиля -->
-        <header class="profile-card glass">
+        <header class="profile-card glass animate-fade-in">
             <div class="user-info">
-                <img id="user-avatar" src="https://ui-avatars.com/api/?name=User&background=random" alt="Avatar">
+                <div class="avatar-wrapper">
+                    <img id="user-avatar" src="" alt="Avatar" style="display:none;">
+                    <div class="avatar-skeleton" id="avatar-skeleton"></div>
+                </div>
                 <div class="user-text">
-                    <h2 id="user-name">Загрузка...</h2>
-                    <p id="user-status" class="status-inactive">Статус: Нет активной подписки</p>
+                    <h2 id="user-name">
+                        <div class="text-skeleton"></div>
+                    </h2>
+                    <div class="status-badge" id="status-badge">
+                        <div class="status-dot"></div>
+                        <span id="user-status">Проверка...</span>
+                    </div>
                 </div>
             </div>
-            <div class="key-container" id="key-container" style="display: none;">
-                <p class="key-label">Ваш ключ (VLESS):</p>
+            
+            <div class="key-container" id="key-container">
+                <p class="key-label">Ваш ключ подписки:</p>
                 <div class="key-box" id="copy-key-btn">
-                    <span id="vpn-key">vless://...</span>
+                    <span id="vpn-key">У вас нет активной подписки</span>
                     <svg class="copy-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
                         <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
                     </svg>
@@ -31,13 +44,19 @@
         </header>
 
         <!-- Основной контент (Тарифы) -->
-        <main class="tariffs-section">
-            <h3>Выберите тариф</h3>
+        <main class="tariffs-section animate-slide-up">
+            <h3 class="section-title">Выбор тарифа</h3>
             <div class="tariffs-grid">
                 
                 <div class="tariff-card glass" data-tariff="1_month" data-price="150">
-                    <div class="tariff-header">
-                        <h4>1 Месяц</h4>
+                    <div class="tariff-content">
+                        <div class="tariff-icon silver">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <div class="tariff-info">
+                            <h4>1 Месяц</h4>
+                            <p>Базовый доступ</p>
+                        </div>
                     </div>
                     <div class="tariff-price">
                         <span class="price-val">150</span>
@@ -46,9 +65,16 @@
                 </div>
 
                 <div class="tariff-card glass recommended" data-tariff="3_months" data-price="400">
-                    <div class="badge">Выгодно</div>
-                    <div class="tariff-header">
-                        <h4>3 Месяца</h4>
+                    <div class="badge-glow"></div>
+                    <div class="badge">Хит продаж</div>
+                    <div class="tariff-content">
+                        <div class="tariff-icon gold">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                        </div>
+                        <div class="tariff-info">
+                            <h4>3 Месяца</h4>
+                            <p>Выгодное решение</p>
+                        </div>
                     </div>
                     <div class="tariff-price">
                         <span class="price-val">400</span>
@@ -57,8 +83,14 @@
                 </div>
 
                 <div class="tariff-card glass" data-tariff="12_months" data-price="1200">
-                    <div class="tariff-header">
-                        <h4>1 Год</h4>
+                    <div class="tariff-content">
+                        <div class="tariff-icon diamond">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 22 22 7 12 2"/></svg>
+                        </div>
+                        <div class="tariff-info">
+                            <h4>1 Год</h4>
+                            <p>Максимальная экономия</p>
+                        </div>
                     </div>
                     <div class="tariff-price">
                         <span class="price-val">1200</span>
@@ -70,8 +102,13 @@
         </main>
         
         <!-- Кнопка оплаты (внизу) -->
-        <div class="bottom-action">
-            <button id="pay-btn" class="main-btn" disabled>Выберите тариф</button>
+        <div class="bottom-action-wrapper">
+            <div class="bottom-action glass-strong" id="bottom-bar">
+                <button id="pay-btn" class="main-btn gradient-btn">
+                    <span>Выбрать тариф</span>
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
         </div>
     </div>
 
