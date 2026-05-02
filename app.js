@@ -3,110 +3,179 @@ const tg = window.Telegram.WebApp;
 tg.expand();
 tg.ready();
 
+// База данных приложений для устройств
+const appsData = {
+    ios: [
+        { id: "vultr", name: "Vultr", tag: "РЕКОМЕНДУЕТСЯ", link: "https://apps.apple.com/us/app/vultr/id6450284451" },
+        { id: "foxray", name: "Foxray", tag: "АЛЬТЕРНАТИВА", link: "https://apps.apple.com/us/app/foxray/id6448898396" }
+    ],
+    android: [
+        { id: "v2rayng", name: "v2rayNG", tag: "РЕКОМЕНДУЕТСЯ", link: "https://play.google.com/store/apps/details?id=com.v2ray.ang" },
+        { id: "hiddify", name: "Hiddify", tag: "ПРОСТОЕ", link: "https://play.google.com/store/apps/details?id=app.hiddify.com" }
+    ],
+    windows: [
+        { id: "v2rayn", name: "v2rayN", tag: "РЕКОМЕНДУЕТСЯ", link: "https://github.com/2dust/v2rayN/releases" },
+        { id: "hiddify-win", name: "Hiddify", tag: "УДОБНОЕ", link: "https://github.com/hiddify/hiddify-next/releases" }
+    ]
+};
+
 // Элементы
-const userNameEl = document.getElementById('user-name');
-const userAvatarEl = document.getElementById('user-avatar');
-const avatarSkeleton = document.getElementById('avatar-skeleton');
-const statusBadge = document.getElementById('status-badge');
-const userStatusEl = document.getElementById('user-status');
+const vpnKeyEl = document.getElementById('vpn-key');
+const copyBtn = document.getElementById('copy-btn');
+const downloadBtn = document.getElementById('download-btn');
+const step1Title = document.getElementById('step1-title');
+const step3Desc = document.getElementById('step3-desc');
+const appSelectionGrid = document.getElementById('app-selection-grid');
+const deviceCards = document.querySelectorAll('.device-card');
 
-const payBtn = document.getElementById('pay-btn');
-const bottomBar = document.getElementById('bottom-bar');
-const tariffCards = document.querySelectorAll('.tariff-card');
+let currentDevice = 'ios';
+let currentApp = appsData.ios[0];
+let userVpnKey = "";
 
-let selectedTariff = null;
-let selectedPrice = 0;
+// Инициализация
+function init() {
+    // Пытаемся достать ключ, если мы передали его из бота через initData
+    // В реальном боте лучше получать по API, но для демо ставим заглушку
+    userVpnKey = "vless://заглушка_пока_нет_подписки@server.com:443?type=tcp&security=none";
+    vpnKeyEl.textContent = userVpnKey;
 
-// Установка данных пользователя с имитацией загрузки
-setTimeout(() => {
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const user = tg.initDataUnsafe.user;
+    renderApps(currentDevice);
+}
+
+// Рендер приложений под устройство
+function renderApps(device) {
+    appSelectionGrid.innerHTML = '';
+    const apps = appsData[device] || appsData.ios;
+    
+    apps.forEach((app, index) => {
+        const div = document.createElement('div');
+        div.className = `app-card ${index === 0 ? 'active' : ''}`;
+        div.innerHTML = `<h4>${app.name}</h4><p>${app.tag}</p>`;
         
-        // Убираем скелетон, показываем текст
-        userNameEl.innerHTML = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+        div.addEventListener('click', () => {
+            tg.HapticFeedback.selectionChanged();
+            document.querySelectorAll('.app-card').forEach(c => c.classList.remove('active'));
+            div.classList.add('active');
+            currentApp = app;
+            updateSteps();
+        });
         
-        avatarSkeleton.style.display = 'none';
-        userAvatarEl.style.display = 'block';
-        userAvatarEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.first_name)}&background=222&color=fff&size=128&bold=true`;
-        
-        // В реальном боте здесь должен быть запрос к API за статусом.
-        // Для WebApp мы покажем заглушку (как будто подписки нет).
-        statusBadge.classList.add('status-inactive');
-        userStatusEl.textContent = 'Нет подписки';
+        appSelectionGrid.appendChild(div);
+    });
+    
+    currentApp = apps[0];
+    updateSteps();
+}
+
+// Обновление шагов под приложение
+function updateSteps() {
+    step1Title.innerHTML = `Установите <span style="color: var(--cyan)">${currentApp.name}</span>`;
+    downloadBtn.href = currentApp.link;
+    
+    if (currentDevice === 'ios' || currentDevice === 'android') {
+        step3Desc.textContent = 'Откройте приложение, нажмите "+" (Добавить) и выберите "Import from Clipboard" (Импорт из буфера).';
     } else {
-        userNameEl.innerHTML = 'Гость';
-        avatarSkeleton.style.display = 'none';
+        step3Desc.textContent = 'В приложении нажмите "Servers" -> "Import from Clipboard". Затем включите System Proxy.';
     }
-}, 500); // Небольшая задержка для красоты эффекта загрузки
+}
 
-// Логика выбора тарифа
-tariffCards.forEach(card => {
+// Клики по устройствам
+deviceCards.forEach(card => {
     card.addEventListener('click', () => {
-        // Haptic Feedback
         tg.HapticFeedback.selectionChanged();
-        tg.HapticFeedback.impactOccurred('light');
-
-        // Убираем активный класс у всех
-        tariffCards.forEach(c => c.classList.remove('active'));
-        // Добавляем текущему
+        deviceCards.forEach(c => c.classList.remove('active'));
         card.classList.add('active');
-        
-        selectedTariff = card.getAttribute('data-tariff');
-        selectedPrice = card.getAttribute('data-price');
-        
-        // Обновляем кнопку
-        payBtn.querySelector('span').textContent = `Оплатить ${selectedPrice} ₽`;
-        
-        // Показываем нижний бар плавно
-        if (!bottomBar.classList.contains('visible')) {
-            bottomBar.classList.add('visible');
-        }
+        currentDevice = card.getAttribute('data-device');
+        renderApps(currentDevice);
     });
 });
 
-// Обработка кнопки оплаты
-payBtn.addEventListener('click', () => {
-    if (!selectedTariff) return;
-    
-    // Сильный тактильный отклик перед закрытием
+// Копирование ключа
+copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(userVpnKey).then(() => {
+        tg.HapticFeedback.notificationOccurred('success');
+        tg.showAlert('Ключ скопирован!');
+        copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="20 6 9 17 4 12"></polyline></svg> Скопировано';
+        setTimeout(() => {
+            copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> Скопировать ключ';
+        }, 3000);
+    });
+});
+
+// Навигация (SPA Вкладки)
+const navItems = document.querySelectorAll('.nav-item');
+const pages = document.querySelectorAll('.page');
+
+navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+        e.preventDefault();
+        tg.HapticFeedback.selectionChanged();
+        
+        navItems.forEach(n => n.classList.remove('active'));
+        item.classList.add('active');
+        
+        const targetId = item.getAttribute('data-target');
+        pages.forEach(p => {
+            p.style.display = p.id === targetId ? 'block' : 'none';
+        });
+    });
+});
+
+// Оплата
+let selectedTariff = '3_months';
+let selectedPrice = '400';
+const tariffItems = document.querySelectorAll('.tariff-item');
+const payBtnMain = document.getElementById('pay-btn');
+
+tariffItems.forEach(item => {
+    item.addEventListener('click', () => {
+        tg.HapticFeedback.selectionChanged();
+        tariffItems.forEach(t => t.classList.remove('active'));
+        item.classList.add('active');
+        selectedTariff = item.getAttribute('data-tariff');
+        selectedPrice = item.getAttribute('data-price');
+        payBtnMain.textContent = `Оплатить ${selectedPrice} ₽`;
+    });
+});
+
+payBtnMain.addEventListener('click', () => {
     tg.HapticFeedback.impactOccurred('heavy');
+    payBtnMain.textContent = 'Обработка...';
     
-    // Изменяем текст на кнопке
-    payBtn.querySelector('span').textContent = 'Обработка...';
-    
-    // Формируем данные
     const data = JSON.stringify({
         action: 'buy',
         tariff: selectedTariff,
         price: selectedPrice
     });
 
-    // Небольшая задержка для эффекта
     setTimeout(() => {
         tg.sendData(data);
         tg.close();
     }, 400);
 });
 
-// Клик по ключу (копирование)
-document.getElementById('copy-key-btn').addEventListener('click', () => {
-    const keyText = document.getElementById('vpn-key').textContent;
-    if (keyText && keyText !== 'У вас нет активной подписки') {
-        navigator.clipboard.writeText(keyText).then(() => {
-            tg.HapticFeedback.notificationOccurred('success');
-            tg.showAlert('Ключ скопирован в буфер обмена!');
-        });
-    } else {
-        tg.HapticFeedback.notificationOccurred('error');
-    }
+// Модалка QR Кода
+const qrBtn = document.getElementById('qr-btn');
+const qrModal = document.getElementById('qr-modal');
+const closeQrBtn = document.getElementById('close-qr');
+const qrImage = document.getElementById('qr-image');
+const qrLoading = document.getElementById('qr-loading');
+
+qrBtn.addEventListener('click', () => {
+    tg.HapticFeedback.impactOccurred('light');
+    qrModal.classList.add('active');
+    
+    // Генерация QR через API
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(userVpnKey)}&bgcolor=ffffff`;
+    qrImage.src = qrUrl;
+    qrImage.onload = () => {
+        qrLoading.style.display = 'none';
+        qrImage.style.display = 'block';
+    };
 });
 
-// Цвета темы
-if (tg.themeParams) {
-    if (tg.themeParams.button_color) {
-        document.documentElement.style.setProperty('--primary', tg.themeParams.button_color);
-    }
-    if (tg.themeParams.bg_color) {
-        document.documentElement.style.setProperty('--bg-base', tg.themeParams.bg_color);
-    }
-}
+closeQrBtn.addEventListener('click', () => {
+    qrModal.classList.remove('active');
+});
+
+init();
