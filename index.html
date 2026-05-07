@@ -66,7 +66,7 @@
 
         .app-container { 
             padding: 20px; 
-            padding-top: 80px;
+            padding-top: var(--content-top, 146px);
             padding-bottom: 90px; 
             max-width: 500px; 
             margin: 0 auto; 
@@ -85,17 +85,17 @@
             margin-bottom: 24px;
         }
         
-        /* Header — закреплён под TG-баром */
+        /* Header — чётко под TG-баром (status bar + TG bar) */
         .top-header { 
             position: fixed;
-            top: 0;
+            top: var(--header-top, 90px);
             left: 0; right: 0;
             z-index: 50;
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
-            padding: 12px 20px;
-            background: rgba(6, 13, 6, 0.75);
+            padding: 10px 20px;
+            background: rgba(6, 13, 6, 0.82);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid rgba(93, 235, 21, 0.12);
@@ -666,9 +666,22 @@
         try {
             tg = window.Telegram.WebApp;
             tg.expand();
+            if (tg.requestFullscreen) tg.requestFullscreen();
             if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
             tg.enableClosingConfirmation();
             tg.ready();
+
+            // Сумма: status bar + TG native bar — именно под этим должен стартовать хедер
+            function applyTgSafeArea() {
+                const deviceTop  = tg.safeAreaInset?.top ?? 0;        // высота status bar
+                const tgBarTop   = tg.contentSafeAreaInset?.top ?? 0;  // высота TG-бара
+                const total = deviceTop + tgBarTop;
+                document.documentElement.style.setProperty('--header-top', total + 'px');
+                document.documentElement.style.setProperty('--content-top', (total + 56) + 'px');
+            }
+            applyTgSafeArea();
+            tg.onEvent('safeAreaChanged', applyTgSafeArea);
+            tg.onEvent('contentSafeAreaChanged', applyTgSafeArea);
         } catch (e) {
             console.log("Telegram WebApp is not available.");
             tg = {
