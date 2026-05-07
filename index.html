@@ -117,12 +117,13 @@
             transition: opacity 0.28s cubic-bezier(0.4,0,0.2,1), transform 0.28s cubic-bezier(0.4,0,0.2,1);
             display: none;
         }
-        .page.page-visible {
+        .page.page-visible, .page.active-page {
             display: block !important;
             opacity: 1;
             transform: translateY(0);
         }
         .page.page-exit {
+            display: block !important;
             opacity: 0;
             transform: translateY(-8px);
         }
@@ -405,7 +406,7 @@
         </header>
 
         <!-- Вкладка: Подключение (Главная) -->
-        <div id="page-connect" class="page active-page">
+        <div id="page-connect" class="page page-visible">
             <!-- Приветственный блок -->
             <div class="glass-panel" style="padding: 16px 20px; margin-bottom: 4px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
