@@ -66,7 +66,7 @@
 
         .app-container { 
             padding: 20px; 
-            padding-top: calc(var(--tg-safe-area-inset-top, 0px) + 68px);
+            padding-top: calc(var(--tg-content-safe-area-inset-top, 44px) + 68px);
             padding-bottom: 90px; 
             max-width: 500px; 
             margin: 0 auto; 
@@ -85,10 +85,10 @@
             margin-bottom: 24px;
         }
         
-        /* Header — below Telegram native bar */
+        /* Header — под Telegram-баром */
         .top-header { 
             position: fixed;
-            top: var(--tg-safe-area-inset-top, 0px);
+            top: var(--tg-content-safe-area-inset-top, 44px);
             left: 0; right: 0;
             z-index: 50;
             display: flex; 
@@ -674,10 +674,11 @@
 
             // Позиционируем хедер под Telegram-баром
             function applyTgSafeArea() {
-                const top = tg.safeAreaInset?.top ?? 0;
                 const contentTop = tg.contentSafeAreaInset?.top ?? 0;
-                const offset = Math.max(top, contentTop);
-                document.documentElement.style.setProperty('--tg-safe-area-inset-top', offset + 'px');
+                const safeTop    = tg.safeAreaInset?.top ?? 0;
+                // contentSafeAreaInset.top — это высота Telegram-бара (Closing/arrows)
+                const offset = Math.max(contentTop, safeTop);
+                document.documentElement.style.setProperty('--tg-content-safe-area-inset-top', offset + 'px');
             }
             applyTgSafeArea();
             tg.onEvent('safeAreaChanged', applyTgSafeArea);
