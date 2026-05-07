@@ -66,7 +66,7 @@
 
         .app-container { 
             padding: 20px; 
-            padding-top: calc(var(--tg-content-safe-area-inset-top, 44px) + 68px);
+            padding-top: 80px;
             padding-bottom: 90px; 
             max-width: 500px; 
             margin: 0 auto; 
@@ -85,10 +85,10 @@
             margin-bottom: 24px;
         }
         
-        /* Header — под Telegram-баром */
+        /* Header — закреплён под TG-баром */
         .top-header { 
             position: fixed;
-            top: var(--tg-content-safe-area-inset-top, 44px);
+            top: 0;
             left: 0; right: 0;
             z-index: 50;
             display: flex; 
@@ -99,7 +99,6 @@
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid rgba(93, 235, 21, 0.12);
-            transition: background 0.3s;
         }
         .logo-area { display: flex; align-items: center; gap: 12px; }
         .shield-icon { 
@@ -667,23 +666,9 @@
         try {
             tg = window.Telegram.WebApp;
             tg.expand();
-            if (tg.requestFullscreen) tg.requestFullscreen();
             if (tg.disableVerticalSwipes) tg.disableVerticalSwipes();
             tg.enableClosingConfirmation();
             tg.ready();
-
-            // Позиционируем хедер под Telegram-баром
-            function applyTgSafeArea() {
-                const contentTop = tg.contentSafeAreaInset?.top ?? 0;
-                const safeTop    = tg.safeAreaInset?.top ?? 0;
-                // contentSafeAreaInset.top — это высота Telegram-бара (Closing/arrows)
-                const offset = Math.max(contentTop, safeTop);
-                document.documentElement.style.setProperty('--tg-content-safe-area-inset-top', offset + 'px');
-            }
-            applyTgSafeArea();
-            tg.onEvent('safeAreaChanged', applyTgSafeArea);
-            tg.onEvent('contentSafeAreaChanged', applyTgSafeArea);
-            tg.onEvent('viewportChanged', applyTgSafeArea);
         } catch (e) {
             console.log("Telegram WebApp is not available.");
             tg = {
