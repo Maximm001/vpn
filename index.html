@@ -112,20 +112,15 @@
 
         /* Page transitions — iOS-style */
         .page {
+            display: none;
             opacity: 0;
             transform: translateY(10px);
-            transition: opacity 0.28s cubic-bezier(0.4,0,0.2,1), transform 0.28s cubic-bezier(0.4,0,0.2,1);
-            display: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .page.page-visible, .page.active-page {
-            display: block !important;
+        .page.page-visible {
+            display: block;
             opacity: 1;
             transform: translateY(0);
-        }
-        .page.page-exit {
-            display: block !important;
-            opacity: 0;
-            transform: translateY(-8px);
         }
 
         /* Sections */
@@ -738,7 +733,6 @@
         let userVpnKey = "vless://заглушка_пока_нет_подписки@server.com:443?type=tcp&security=none";
         
         // Extract key from URL if passed by bot (e.g. ?key=vless://...)
-        const urlParams = new URLSearchParams(window.location.search);
         if(urlParams.has('key')) {
             userVpnKey = decodeURIComponent(urlParams.get('key'));
         }
@@ -752,7 +746,7 @@
 
         function renderApps(device) {
             appSelectionGrid.innerHTML = '';
-            const apps = appsData[device] || [appKaring];
+            const apps = appsData[device] || [appHappIos];
             
             // Check if currentApp exists in the new list, if not default to Karing (index 0)
             if (!apps.find(a => a.id === currentApp.id)) {
@@ -830,18 +824,11 @@
             if (current === next) return;
 
             if (current) {
-                current.classList.add('page-exit');
-                setTimeout(() => {
-                    current.classList.remove('page-visible', 'page-exit');
-                    current.style.display = 'none';
-                }, 260);
+                current.classList.remove('page-visible');
             }
             if (next) {
-                next.style.display = 'block';
                 requestAnimationFrame(() => {
-                    requestAnimationFrame(() => {
-                        next.classList.add('page-visible');
-                    });
+                    next.classList.add('page-visible');
                 });
             }
         }
@@ -948,13 +935,7 @@
 
         init();
 
-        // Fix initial page — use page-visible class
-        const firstPage = document.getElementById('page-connect');
-        if (firstPage) {
-            firstPage.classList.add('page-visible');
-        }
-
-        // ── Canvas animated background ──────────────────────────────
+        // Canvas animated background ──────────────────────────────
         (function() {
             const canvas = document.getElementById('bg-canvas');
             const ctx = canvas.getContext('2d');
