@@ -253,11 +253,43 @@
         /* Bottom Navigation */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; right: 0; 
-            background: rgba(10, 15, 28, 0.8); 
+            background: rgba(6, 13, 6, 0.92); 
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--glass-border); 
-            display: flex; justify-content: space-around; padding: 16px 0; z-index: 100; 
-            padding-bottom: calc(16px + env(safe-area-inset-bottom));
+            display: flex; justify-content: space-around; padding: 12px 0; z-index: 100; 
+            padding-bottom: calc(12px + env(safe-area-inset-bottom));
+        }
+        .nav-item { 
+            display: flex; flex-direction: column; align-items: center; gap: 4px; 
+            color: var(--text-muted); text-decoration: none; font-size: 0.68rem; font-weight: 500; transition: color 0.3s;
+            min-width: 50px;
+        }
+        .nav-item svg { width: 22px; height: 22px; transition: all 0.3s; }
+        .nav-item.active { color: var(--cyan); }
+        .nav-item.active svg { filter: drop-shadow(0 0 8px var(--cyan-glow)); }
+
+        /* Balance Page */
+        .balance-card { text-align: center; padding: 30px 20px; }
+        .balance-amount { font-size: 3rem; font-weight: 700; color: var(--cyan); text-shadow: 0 0 20px var(--cyan-glow); margin-bottom: 4px; }
+        .balance-label { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 24px; }
+        .balance-actions { display: flex; gap: 12px; }
+
+        /* Referral Page */
+        .ref-link-box { 
+            background: rgba(0,0,0,0.3); padding: 14px; border-radius: 12px;
+            border: 1px solid var(--glass-border); margin-bottom: 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .ref-link-text { flex: 1; min-width: 0; font-size: 0.8rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .ref-stats { display: flex; gap: 12px; margin-bottom: 20px; }
+        .ref-stat { flex: 1; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 16px; text-align: center; }
+        .ref-stat .val { font-size: 1.6rem; font-weight: 700; color: var(--cyan); }
+        .ref-stat .lbl { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
+        .ref-list-title { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+        .ref-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 14px; margin-bottom: 10px; }
+        .ref-item-name { font-size: 0.9rem; font-weight: 500; }
+        .ref-item-earn { font-size: 0.85rem; color: var(--cyan); font-weight: 600; }
+        .ref-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
         }
         .nav-item { 
             display: flex; flex-direction: column; align-items: center; gap: 6px; 
@@ -446,6 +478,69 @@
             </div>
         </div>
 
+        <!-- Вкладка: Баланс -->
+        <div id="page-balance" class="page" style="display: none;">
+            <div class="glass-panel">
+                <div class="balance-card">
+                    <div class="balance-amount" id="balance-amount">0 ₽</div>
+                    <div class="balance-label">Ваш реферальный баланс</div>
+                    <div class="balance-actions">
+                        <button class="action-btn" style="flex:1;" onclick="showPage('page-referrals')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Мои рефералы
+                        </button>
+                        <button class="action-btn cyan-btn" style="flex:1;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            Вывести
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-panel">
+                <div class="section-title">КАК ЗАРАБОТАТЬ</div>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div class="info-banner">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <span>Приглашайте друзей по реферальной ссылке и получайте <b style="color:var(--cyan)">бонус с каждой их оплаты</b>.</span>
+                    </div>
+                    <div class="info-banner">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>Накопленный баланс можно использовать для <b style="color:var(--cyan)">оплаты подписки</b> или вывода.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Вкладка: Рефералы -->
+        <div id="page-referrals" class="page" style="display: none;">
+            <div class="glass-panel">
+                <div class="section-title">ВАША РЕФЕРАЛЬНАЯ ССЫЛКА</div>
+                <div class="ref-link-box">
+                    <span class="ref-link-text" id="ref-link-text">Загрузка...</span>
+                    <button id="copy-ref-btn" style="background:var(--cyan);border:none;border-radius:8px;padding:8px 12px;color:#000;font-weight:700;font-size:0.8rem;cursor:pointer;flex-shrink:0;">Копировать</button>
+                </div>
+                <div class="ref-stats">
+                    <div class="ref-stat">
+                        <div class="val" id="ref-count">0</div>
+                        <div class="lbl">Рефералов</div>
+                    </div>
+                    <div class="ref-stat">
+                        <div class="val" id="ref-earned">0 ₽</div>
+                        <div class="lbl">Заработано</div>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-panel">
+                <div class="ref-list-title">ПРИГЛАШЁННЫЕ</div>
+                <div id="ref-list">
+                    <div class="ref-empty">
+                        🙈 Вы ещё никого не пригласили.<br>
+                        Поделитесь ссылкой — и зарабатывайте!
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Нижняя Навигация -->
         <nav class="bottom-nav">
             <a href="#" class="nav-item active" data-target="page-connect">
@@ -455,6 +550,14 @@
             <a href="#" class="nav-item" data-target="page-tariffs">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
                 <span>Тарифы</span>
+            </a>
+            <a href="#" class="nav-item" data-target="page-balance">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <span>Баланс</span>
+            </a>
+            <a href="#" class="nav-item" data-target="page-referrals">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>Рефералы</span>
             </a>
         </nav>
     </div>
@@ -489,34 +592,33 @@
             };
         }
 
-        // App Definitions — iOS
-        const appKaringIos   = { id: "karing",   name: "Karing",   tag: "РЕКОМ.", link: "https://apps.apple.com/us/app/karing/id6472431552?l=ru" };
-        const appV2TunIos    = { id: "v2raytun", name: "V2RayTun", tag: "АЛЬТЕРН.",   link: "https://apps.apple.com/us/app/v2raytun/id6476628951?l=ru" };
-        const appHappIos     = { id: "happ",     name: "Happ",     tag: "ПОПУЛЯР",    link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
+        const appHappIos     = { id: "happ",     name: "Happ",     tag: "РЕКОМ.", link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
+        const appKaringIos   = { id: "karing",   name: "Karing",   tag: "АЛЬТЕРН.",  link: "https://apps.apple.com/us/app/karing/id6472431552?l=ru" };
+        const appV2TunIos    = { id: "v2raytun", name: "V2RayTun", tag: "ПРОСТОЕ",   link: "https://apps.apple.com/us/app/v2raytun/id6476628951?l=ru" };
         // Android
-        const appIncy        = { id: "incy",     name: "Incy VPN", tag: "РЕКОМ.", link: "https://play.google.com/store/apps/details?id=io.incy.vpn" };
-        const appV2TunAnd    = { id: "v2tun",    name: "V2RayTun", tag: "АЛЬТЕРН.",   link: "https://play.google.com/store/apps/details?id=com.v2raytun.android" };
-        const appHappAnd     = { id: "happand",  name: "Happ",     tag: "ПОПУЛЯР",    link: "https://play.google.com/store/apps/details?id=com.happ.proxy" };
+        const appHappAnd     = { id: "happand",  name: "Happ",     tag: "РЕКОМ.", link: "https://play.google.com/store/apps/details?id=com.happ.proxy" };
+        const appIncy        = { id: "incy",     name: "Incy VPN", tag: "АЛЬТЕРН.",  link: "https://play.google.com/store/apps/details?id=io.incy.vpn" };
+        const appV2TunAnd    = { id: "v2tun",    name: "V2RayTun", tag: "ПРОСТОЕ",   link: "https://play.google.com/store/apps/details?id=com.v2raytun.android" };
         // macOS
-        const appV2Box       = { id: "v2box",    name: "V2Box",    tag: "РЕКОМ.", link: "https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690?l=ru" };
-        const appHappMac     = { id: "happmac",  name: "Happ",     tag: "АЛЬТЕРН.",   link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
+        const appHappMac     = { id: "happmac",  name: "Happ",     tag: "РЕКОМ.", link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
+        const appV2Box       = { id: "v2box",    name: "V2Box",    tag: "АЛЬТЕРН.",  link: "https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690?l=ru" };
         // Windows
         const appHappWin     = { id: "happwin",  name: "Happ",     tag: "РЕКОМ.", link: "https://happ.netlify.app/" };
-        const appKaringWin   = { id: "karingwin",name: "Karing",   tag: "АЛЬТЕРН.",   link: "https://karing.app/download/" };
-        const appV2RayN      = { id: "v2rayn",   name: "v2rayN",   tag: "ПРОСТОЕ",    link: "https://github.com/2dust/v2rayN/releases" };
+        const appKaringWin   = { id: "karingwin",name: "Karing",   tag: "АЛЬТЕРН.",  link: "https://karing.app/download/" };
+        const appV2RayN      = { id: "v2rayn",   name: "v2rayN",   tag: "ПРОСТОЕ",   link: "https://github.com/2dust/v2rayN/releases" };
         // Apple TV
         const appHappTV      = { id: "happtv",   name: "Happ",        tag: "РЕКОМ.", link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
-        const appStash       = { id: "stash",    name: "Stash",       tag: "АЛЬТЕРН.",   link: "https://apps.apple.com/app/stash-rule-based-proxy/id1596063349" };
-        const appShadowRkt   = { id: "shadow",   name: "Shadowrocket",tag: "ПРОСТОЕ",    link: "https://apps.apple.com/us/app/shadowrocket/id932747118" };
-        const appSingBox     = { id: "singbox",  name: "Sing-Box",    tag: "ОПЫТНЫМ",   link: "https://apps.apple.com/app/sing-box/id6451272673" };
+        const appStash       = { id: "stash",    name: "Stash",       tag: "АЛЬТЕРН.",  link: "https://apps.apple.com/app/stash-rule-based-proxy/id1596063349" };
+        const appShadowRkt   = { id: "shadow",   name: "Shadowrocket",tag: "ПРОСТОЕ",   link: "https://apps.apple.com/us/app/shadowrocket/id932747118" };
+        const appSingBox     = { id: "singbox",  name: "Sing-Box",    tag: "ОПЫТНЫМ",  link: "https://apps.apple.com/app/sing-box/id6451272673" };
         // Android TV
         const appV2RayNG     = { id: "v2rayng",  name: "v2rayNG",  tag: "РЕКОМ.", link: "https://play.google.com/store/apps/details?id=com.v2ray.ang" };
-        const appKaringTV    = { id: "karingtv", name: "Karing",   tag: "АЛЬТЕРН.",   link: "https://play.google.com/store/apps/details?id=com.karing.app" };
+        const appKaringTV    = { id: "karingtv", name: "Karing",   tag: "АЛЬТЕРН.",  link: "https://play.google.com/store/apps/details?id=com.karing.app" };
 
         const appsData = {
-            ios:       [appKaringIos, appV2TunIos, appHappIos],
-            android:   [appIncy, appV2TunAnd, appHappAnd],
-            macos:     [appV2Box, appHappMac],
+            ios:       [appHappIos, appKaringIos, appV2TunIos],
+            android:   [appHappAnd, appIncy, appV2TunAnd],
+            macos:     [appHappMac, appV2Box],
             windows:   [appHappWin, appKaringWin, appV2RayN],
             appletv:   [appHappTV, appStash, appShadowRkt, appSingBox],
             androidtv: [appV2RayNG, appKaringTV]
@@ -531,7 +633,7 @@
         const deviceCards = document.querySelectorAll('.device-card');
 
         let currentDevice = 'ios';
-        let currentApp = appKaringIos;
+        let currentApp = appHappIos;
         
         // This will be replaced by the backend data via url params or templates if needed
         let userVpnKey = "vless://заглушка_пока_нет_подписки@server.com:443?type=tcp&security=none";
@@ -620,20 +722,51 @@
         const navItems = document.querySelectorAll('.nav-item');
         const pages = document.querySelectorAll('.page');
 
+        function showPage(targetId) {
+            navItems.forEach(n => {
+                n.classList.toggle('active', n.getAttribute('data-target') === targetId);
+            });
+            pages.forEach(p => {
+                p.style.display = p.id === targetId ? 'block' : 'none';
+            });
+        }
+
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 tg.HapticFeedback.selectionChanged();
-                
-                navItems.forEach(n => n.classList.remove('active'));
-                item.classList.add('active');
-                
-                const targetId = item.getAttribute('data-target');
-                pages.forEach(p => {
-                    p.style.display = p.id === targetId ? 'block' : 'none';
-                });
+                showPage(item.getAttribute('data-target'));
             });
         });
+
+        // Drag-to-scroll for PC/Mac
+        function addDragScroll(el) {
+            let isDown = false, startX, scrollLeft;
+            el.addEventListener('mousedown', e => { isDown = true; el.style.cursor = 'grabbing'; startX = e.pageX - el.offsetLeft; scrollLeft = el.scrollLeft; });
+            el.addEventListener('mouseleave', () => { isDown = false; el.style.cursor = 'grab'; });
+            el.addEventListener('mouseup', () => { isDown = false; el.style.cursor = 'grab'; });
+            el.addEventListener('mousemove', e => { if (!isDown) return; e.preventDefault(); const x = e.pageX - el.offsetLeft; el.scrollLeft = scrollLeft - (x - startX); });
+            el.style.cursor = 'grab';
+        }
+        document.querySelectorAll('.device-scroll, .app-scroll').forEach(addDragScroll);
+
+        // Referral page init
+        const userId = tg.initDataUnsafe?.user?.id || '0';
+        const refLink = `https://t.me/fossaavpn_bot?start=ref_${userId}`;
+        const refLinkEl = document.getElementById('ref-link-text');
+        if (refLinkEl) refLinkEl.textContent = refLink;
+
+        const copyRefBtn = document.getElementById('copy-ref-btn');
+        if (copyRefBtn) {
+            copyRefBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(refLink).then(() => {
+                    tg.HapticFeedback.notificationOccurred('success');
+                    copyRefBtn.textContent = '✓ Скопировано';
+                    setTimeout(() => { copyRefBtn.textContent = 'Копировать'; }, 2000);
+                });
+            });
+        }
+
 
         // Tariffs
         let selectedTariff = '3_months';
