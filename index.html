@@ -883,6 +883,13 @@
         const refLinkEl = document.getElementById('ref-link-text');
         if (refLinkEl) refLinkEl.textContent = refLink;
 
+        // Отображаем баланс из URL-параметра &bal=
+        const balParam = urlParams.get('bal');
+        const balanceAmountEl = document.getElementById('balance-amount');
+        if (balanceAmountEl && balParam !== null) {
+            balanceAmountEl.textContent = `${parseInt(balParam)} ₽`;
+        }
+
         const copyRefBtn = document.getElementById('copy-ref-btn');
         if (copyRefBtn) {
             copyRefBtn.addEventListener('click', () => {
