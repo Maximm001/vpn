@@ -8,13 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #0A0F1C;
-            --cyan: #00E5FF;
-            --cyan-dark: #00B3CC;
-            --cyan-glow: rgba(0, 229, 255, 0.4);
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-hover: rgba(255, 255, 255, 0.06);
+            --bg-main: #060D06;
+            --cyan: #5DEB15;
+            --cyan-dark: #3DAF0E;
+            --cyan-glow: rgba(93, 235, 21, 0.4);
+            --glass-bg: rgba(93, 235, 21, 0.03);
+            --glass-border: rgba(93, 235, 21, 0.1);
+            --glass-hover: rgba(93, 235, 21, 0.06);
             --text-main: #FFFFFF;
             --text-muted: rgba(255, 255, 255, 0.5);
             --text-dark: rgba(255, 255, 255, 0.8);
@@ -42,14 +42,14 @@
         body::before {
             width: 300px;
             height: 300px;
-            background: radial-gradient(circle, rgba(0,229,255,0.2) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(93,235,21,0.15) 0%, transparent 70%);
             top: -50px;
             left: -100px;
         }
         body::after {
             width: 350px;
             height: 350px;
-            background: radial-gradient(circle, rgba(138,43,226,0.15) 0%, rgba(255,215,0,0.05) 70%, transparent 100%);
+            background: radial-gradient(circle, rgba(30,80,10,0.3) 0%, rgba(93,235,21,0.05) 70%, transparent 100%);
             bottom: -100px;
             right: -100px;
         }
@@ -206,21 +206,31 @@
             color: #000; border: none; 
             box-shadow: 0 4px 20px var(--cyan-glow); 
             text-shadow: none;
+            font-weight: 700;
         }
         .cyan-btn:active { opacity: 0.9; box-shadow: 0 2px 10px var(--cyan-glow); }
         .cyan-btn svg { color: #000; }
 
         /* Key Display */
         .key-display-box { 
-            background: rgba(0,0,0,0.3); 
-            padding: 14px; border-radius: 12px; margin-bottom: 16px; 
-            border: 1px solid rgba(255,255,255,0.05); 
+            background: rgba(0,0,0,0.4); 
+            padding: 12px 14px; border-radius: 12px; margin-bottom: 16px; 
+            border: 1px solid rgba(93,235,21,0.1); 
             box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
             display: flex; align-items: center;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
         }
         #vpn-key { 
-            display: block; font-family: monospace; font-size: 0.85rem; 
-            color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 100%; 
+            display: block; font-family: monospace; font-size: 0.78rem; 
+            color: var(--text-muted); 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            white-space: nowrap; 
+            width: 0;
+            flex: 1;
+            min-width: 0;
         }
 
         /* Info Banner */
@@ -317,7 +327,7 @@
                 <div class="shield-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </div>
-                <h1>FussaVPN</h1>
+                <h1>FossaVPN</h1>
             </div>
             <button class="qr-btn" id="qr-btn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
@@ -329,7 +339,7 @@
         <div id="page-connect" class="page active-page">
             <div class="section-title">ВЫБЕРИТЕ УСТРОЙСТВО</div>
             <div class="device-scroll">
-                <div class="device-card" data-device="ios">
+                <div class="device-card active" data-device="ios">
                     <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.336 14.5c-.382 0-1.127-.234-1.777-.234-.633 0-1.422.25-1.785.25-1.191 0-2.316-.707-2.922-1.789-.809-1.441-.836-3.816.586-5.066.66-.582 1.547-.945 2.309-.945.699 0 1.34.254 1.777.254.426 0 1.285-.285 2.113-.285.492 0 1.957.047 2.879 1.402-2.379 1.465-1.957 4.195.344 5.25-1.047 1.547-2.484 1.164-3.524 1.164zM14.57 6.441c.211-1.023-.199-2.023-.848-2.672-.855-.844-2.129-1.008-2.883-.75.055 1.055.602 1.945 1.258 2.586.66.656 1.766 1.055 2.473.836z"/></svg>
                     <span>iOS</span>
                 </div>
@@ -341,7 +351,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
                     <span>macOS</span>
                 </div>
-                <div class="device-card active" data-device="windows">
+                <div class="device-card" data-device="windows">
                     <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M2.5 11.5v-6l8.5-1.5v7.5h-8.5zm9 0v-7.5l9-1.5v9h-9zm-9 1h8.5v7.5l-8.5-1.5v-6zm9 0h9v9l-9-1.5v-7.5z"/></svg>
                     <span>Windows</span>
                 </div>
@@ -469,16 +479,16 @@
         }
 
         // App Definitions
-        const appKaring = { id: "karing", name: "Karing", tag: "РЕКОМЕНДУЕТСЯ", link: "https://karing.app/" };
-        const appHapp = { id: "happ", name: "Happ", tag: "АЛЬТЕРНАТИВА", link: "https://happ.app/" }; // Placeholder URL
-        const appIncy = { id: "incy", name: "INCY", tag: "ПРОСТОЕ", link: "https://incy.app/" }; // Placeholder URL
+        const appHapp  = { id: "happ",   name: "Happ",   tag: "РЕКОМЕНДУЕТСЯ", link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
+        const appKaring = { id: "karing", name: "Karing", tag: "АЛЬТЕРНАТИВА",   link: "https://karing.app/" };
+        const appShadow = { id: "shadow", name: "Streisand", tag: "ПРОСТОЕ",    link: "https://apps.apple.com/app/streisand/id6450534064" };
 
         const appsData = {
-            ios: [appKaring, appHapp, appIncy],
-            android: [appKaring, appHapp, appIncy],
-            macos: [appKaring, appHapp, appIncy],
-            windows: [appKaring, appHapp, appIncy],
-            appletv: [appKaring]
+            ios:      [appHapp, appKaring, appShadow],
+            android:  [appHapp, appKaring],
+            macos:    [appKaring, appHapp],
+            windows:  [appKaring, appHapp],
+            appletv:  [appHapp]
         };
 
         const vpnKeyEl = document.getElementById('vpn-key');
@@ -489,8 +499,8 @@
         const appSelectionGrid = document.getElementById('app-selection-grid');
         const deviceCards = document.querySelectorAll('.device-card');
 
-        let currentDevice = 'windows';
-        let currentApp = appKaring;
+        let currentDevice = 'ios';
+        let currentApp = appHapp;
         
         // This will be replaced by the backend data via url params or templates if needed
         let userVpnKey = "vless://заглушка_пока_нет_подписки@server.com:443?type=tcp&security=none";
@@ -503,7 +513,6 @@
 
         function init() {
             vpnKeyEl.textContent = userVpnKey;
-            // Force activate the default device visually
             deviceCards.forEach(c => c.classList.remove('active'));
             document.querySelector(`.device-card[data-device="${currentDevice}"]`).classList.add('active');
             renderApps(currentDevice);
