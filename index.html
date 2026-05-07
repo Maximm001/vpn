@@ -85,7 +85,11 @@
         }
         
         /* Header */
-        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .top-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 24px; 
+            padding-top: max(12px, env(safe-area-inset-top));
+        }
         .logo-area { display: flex; align-items: center; gap: 12px; }
         .shield-icon { 
             width: 40px; height: 40px; 
