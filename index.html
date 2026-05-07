@@ -134,23 +134,30 @@
         }
         .device-card.active svg { opacity: 1; filter: drop-shadow(0 0 5px var(--cyan-glow)); }
 
-        /* App Grid */
-        .app-grid { display: flex; gap: 12px; margin-bottom: 30px; }
+        /* App Scroll — horizontal like devices */
+        .app-scroll { 
+            display: flex; gap: 12px; overflow-x: auto; 
+            padding-bottom: 10px; margin-bottom: 20px; 
+            scrollbar-width: none; 
+        }
+        .app-scroll::-webkit-scrollbar { display: none; }
         .app-card { 
-            flex: 1; background: var(--glass-bg); 
+            flex: 0 0 auto; width: 90px; height: 85px;
+            background: var(--glass-bg); 
             border: 1px solid var(--glass-border); 
-            border-radius: 16px; padding: 14px 10px; 
+            border-radius: 16px; padding: 10px 8px; 
             cursor: pointer; transition: all 0.3s; 
             text-align: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
         }
-        .app-card h4 { font-size: 1rem; margin-bottom: 4px; color: var(--text-muted); transition: color 0.3s; }
-        .app-card p { font-size: 0.65rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.7; }
+        .app-card h4 { font-size: 0.85rem; margin-bottom: 0; color: var(--text-muted); transition: color 0.3s; font-weight: 600; }
+        .app-card p { font-size: 0.58rem; text-transform: uppercase; color: var(--text-muted); opacity: 0.7; }
         .app-card.active { 
             border-color: var(--cyan); 
-            background: linear-gradient(180deg, rgba(0,229,255,0.1) 0%, rgba(0,229,255,0.02) 100%);
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+            background: linear-gradient(180deg, rgba(93,235,21,0.1) 0%, rgba(93,235,21,0.02) 100%);
+            box-shadow: 0 0 20px rgba(93,235,21,0.1);
         }
-        .app-card.active h4 { color: #fff; text-shadow: 0 0 8px rgba(0, 229, 255, 0.5); }
+        .app-card.active h4 { color: #fff; text-shadow: 0 0 8px rgba(93,235,21,0.5); }
         .app-card.active p { color: var(--cyan); opacity: 1; }
 
         /* Steps Timeline */
@@ -366,7 +373,7 @@
             </div>
 
             <div class="section-title">ВЫБЕРИТЕ ПРИЛОЖЕНИЕ</div>
-            <div class="app-grid" id="app-selection-grid">
+            <div class="app-scroll" id="app-selection-grid">
                 <!-- Заполняется JS -->
             </div>
 
@@ -483,30 +490,32 @@
         }
 
         // App Definitions — iOS
-        const appKaringIos   = { id: "karing",   name: "Karing",   tag: "РЕКОМЕНДУЕТСЯ", link: "https://apps.apple.com/us/app/karing/id6472431552?l=ru" };
-        const appV2TunIos    = { id: "v2raytun", name: "V2RayTun", tag: "АЛЬТЕРНАТИВА",   link: "https://apps.apple.com/us/app/v2raytun/id6476628951?l=ru" };
+        const appKaringIos   = { id: "karing",   name: "Karing",   tag: "РЕКОМ.", link: "https://apps.apple.com/us/app/karing/id6472431552?l=ru" };
+        const appV2TunIos    = { id: "v2raytun", name: "V2RayTun", tag: "АЛЬТЕРН.",   link: "https://apps.apple.com/us/app/v2raytun/id6476628951?l=ru" };
+        const appHappIos     = { id: "happ",     name: "Happ",     tag: "ПОПУЛЯР",    link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
         // Android
-        const appIncy        = { id: "incy",     name: "Incy VPN", tag: "РЕКОМЕНДУЕТСЯ", link: "https://play.google.com/store/apps/details?id=io.incy.vpn" };
-        const appV2TunAnd    = { id: "v2tun",    name: "V2RayTun", tag: "АЛЬТЕРНАТИВА",   link: "https://play.google.com/store/apps/details?id=com.v2raytun.android" };
+        const appIncy        = { id: "incy",     name: "Incy VPN", tag: "РЕКОМ.", link: "https://play.google.com/store/apps/details?id=io.incy.vpn" };
+        const appV2TunAnd    = { id: "v2tun",    name: "V2RayTun", tag: "АЛЬТЕРН.",   link: "https://play.google.com/store/apps/details?id=com.v2raytun.android" };
+        const appHappAnd     = { id: "happand",  name: "Happ",     tag: "ПОПУЛЯР",    link: "https://play.google.com/store/apps/details?id=com.happ.proxy" };
         // macOS
-        const appV2Box       = { id: "v2box",    name: "V2Box",    tag: "РЕКОМЕНДУЕТСЯ", link: "https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690?l=ru" };
-        const appHappMac     = { id: "happmac",  name: "Happ",     tag: "АЛЬТЕРНАТИВА",   link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
+        const appV2Box       = { id: "v2box",    name: "V2Box",    tag: "РЕКОМ.", link: "https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690?l=ru" };
+        const appHappMac     = { id: "happmac",  name: "Happ",     tag: "АЛЬТЕРН.",   link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
         // Windows
-        const appHappWin     = { id: "happwin",  name: "Happ",     tag: "РЕКОМЕНДУЕТСЯ", link: "https://happ.netlify.app/" };
-        const appKaringWin   = { id: "karingwin",name: "Karing",   tag: "АЛЬТЕРНАТИВА",   link: "https://karing.app/download/" };
-        const appV2RayN      = { id: "v2rayn",   name: "v2rayN",   tag: "ПРОСТОЕ",      link: "https://github.com/2dust/v2rayN/releases" };
+        const appHappWin     = { id: "happwin",  name: "Happ",     tag: "РЕКОМ.", link: "https://happ.netlify.app/" };
+        const appKaringWin   = { id: "karingwin",name: "Karing",   tag: "АЛЬТЕРН.",   link: "https://karing.app/download/" };
+        const appV2RayN      = { id: "v2rayn",   name: "v2rayN",   tag: "ПРОСТОЕ",    link: "https://github.com/2dust/v2rayN/releases" };
         // Apple TV
-        const appHappTV      = { id: "happtv",   name: "Happ",        tag: "РЕКОМЕНДУЕТСЯ", link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
-        const appStash       = { id: "stash",    name: "Stash",       tag: "АЛЬТЕРНАТИВА",   link: "https://apps.apple.com/app/stash-rule-based-proxy/id1596063349" };
-        const appShadowRkt   = { id: "shadow",   name: "Shadowrocket",tag: "ПРОСТОЕ",      link: "https://apps.apple.com/us/app/shadowrocket/id932747118" };
-        const appSingBox     = { id: "singbox",  name: "Sing-Box",    tag: "ДЛЯ ОПЫТНЫХ",  link: "https://apps.apple.com/app/sing-box/id6451272673" };
+        const appHappTV      = { id: "happtv",   name: "Happ",        tag: "РЕКОМ.", link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
+        const appStash       = { id: "stash",    name: "Stash",       tag: "АЛЬТЕРН.",   link: "https://apps.apple.com/app/stash-rule-based-proxy/id1596063349" };
+        const appShadowRkt   = { id: "shadow",   name: "Shadowrocket",tag: "ПРОСТОЕ",    link: "https://apps.apple.com/us/app/shadowrocket/id932747118" };
+        const appSingBox     = { id: "singbox",  name: "Sing-Box",    tag: "ОПЫТНЫМ",   link: "https://apps.apple.com/app/sing-box/id6451272673" };
         // Android TV
-        const appV2RayNG     = { id: "v2rayng",  name: "v2rayNG",  tag: "РЕКОМЕНДУЕТСЯ", link: "https://play.google.com/store/apps/details?id=com.v2ray.ang" };
-        const appKaringTV    = { id: "karingtv", name: "Karing",   tag: "АЛЬТЕРНАТИВА",   link: "https://play.google.com/store/apps/details?id=com.karing.app" };
+        const appV2RayNG     = { id: "v2rayng",  name: "v2rayNG",  tag: "РЕКОМ.", link: "https://play.google.com/store/apps/details?id=com.v2ray.ang" };
+        const appKaringTV    = { id: "karingtv", name: "Karing",   tag: "АЛЬТЕРН.",   link: "https://play.google.com/store/apps/details?id=com.karing.app" };
 
         const appsData = {
-            ios:       [appKaringIos, appV2TunIos],
-            android:   [appIncy, appV2TunAnd],
+            ios:       [appKaringIos, appV2TunIos, appHappIos],
+            android:   [appIncy, appV2TunAnd, appHappAnd],
             macos:     [appV2Box, appHappMac],
             windows:   [appHappWin, appKaringWin, appV2RayN],
             appletv:   [appHappTV, appStash, appShadowRkt, appSingBox],
