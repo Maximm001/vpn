@@ -359,6 +359,10 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
                     <span>Apple TV</span>
                 </div>
+                <div class="device-card" data-device="androidtv">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/><line x1="12" y1="12" x2="12" y2="16"/></svg>
+                    <span>Android TV</span>
+                </div>
             </div>
 
             <div class="section-title">ВЫБЕРИТЕ ПРИЛОЖЕНИЕ</div>
@@ -478,17 +482,35 @@
             };
         }
 
-        // App Definitions
-        const appHapp  = { id: "happ",   name: "Happ",   tag: "РЕКОМЕНДУЕТСЯ", link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
-        const appKaring = { id: "karing", name: "Karing", tag: "АЛЬТЕРНАТИВА",   link: "https://karing.app/" };
-        const appShadow = { id: "shadow", name: "Streisand", tag: "ПРОСТОЕ",    link: "https://apps.apple.com/app/streisand/id6450534064" };
+        // App Definitions — iOS
+        const appKaringIos   = { id: "karing",   name: "Karing",   tag: "РЕКОМЕНДУЕТСЯ", link: "https://apps.apple.com/us/app/karing/id6472431552?l=ru" };
+        const appV2TunIos    = { id: "v2raytun", name: "V2RayTun", tag: "АЛЬТЕРНАТИВА",   link: "https://apps.apple.com/us/app/v2raytun/id6476628951?l=ru" };
+        // Android
+        const appIncy        = { id: "incy",     name: "Incy VPN", tag: "РЕКОМЕНДУЕТСЯ", link: "https://play.google.com/store/apps/details?id=io.incy.vpn" };
+        const appV2TunAnd    = { id: "v2tun",    name: "V2RayTun", tag: "АЛЬТЕРНАТИВА",   link: "https://play.google.com/store/apps/details?id=com.v2raytun.android" };
+        // macOS
+        const appV2Box       = { id: "v2box",    name: "V2Box",    tag: "РЕКОМЕНДУЕТСЯ", link: "https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690?l=ru" };
+        const appHappMac     = { id: "happmac",  name: "Happ",     tag: "АЛЬТЕРНАТИВА",   link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
+        // Windows
+        const appHappWin     = { id: "happwin",  name: "Happ",     tag: "РЕКОМЕНДУЕТСЯ", link: "https://happ.netlify.app/" };
+        const appKaringWin   = { id: "karingwin",name: "Karing",   tag: "АЛЬТЕРНАТИВА",   link: "https://karing.app/download/" };
+        const appV2RayN      = { id: "v2rayn",   name: "v2rayN",   tag: "ПРОСТОЕ",      link: "https://github.com/2dust/v2rayN/releases" };
+        // Apple TV
+        const appHappTV      = { id: "happtv",   name: "Happ",        tag: "РЕКОМЕНДУЕТСЯ", link: "https://apps.apple.com/app/happ-proxy-utility/id6504287480" };
+        const appStash       = { id: "stash",    name: "Stash",       tag: "АЛЬТЕРНАТИВА",   link: "https://apps.apple.com/app/stash-rule-based-proxy/id1596063349" };
+        const appShadowRkt   = { id: "shadow",   name: "Shadowrocket",tag: "ПРОСТОЕ",      link: "https://apps.apple.com/us/app/shadowrocket/id932747118" };
+        const appSingBox     = { id: "singbox",  name: "Sing-Box",    tag: "ДЛЯ ОПЫТНЫХ",  link: "https://apps.apple.com/app/sing-box/id6451272673" };
+        // Android TV
+        const appV2RayNG     = { id: "v2rayng",  name: "v2rayNG",  tag: "РЕКОМЕНДУЕТСЯ", link: "https://play.google.com/store/apps/details?id=com.v2ray.ang" };
+        const appKaringTV    = { id: "karingtv", name: "Karing",   tag: "АЛЬТЕРНАТИВА",   link: "https://play.google.com/store/apps/details?id=com.karing.app" };
 
         const appsData = {
-            ios:      [appHapp, appKaring, appShadow],
-            android:  [appHapp, appKaring],
-            macos:    [appKaring, appHapp],
-            windows:  [appKaring, appHapp],
-            appletv:  [appHapp]
+            ios:       [appKaringIos, appV2TunIos],
+            android:   [appIncy, appV2TunAnd],
+            macos:     [appV2Box, appHappMac],
+            windows:   [appHappWin, appKaringWin, appV2RayN],
+            appletv:   [appHappTV, appStash, appShadowRkt, appSingBox],
+            androidtv: [appV2RayNG, appKaringTV]
         };
 
         const vpnKeyEl = document.getElementById('vpn-key');
@@ -500,7 +522,7 @@
         const deviceCards = document.querySelectorAll('.device-card');
 
         let currentDevice = 'ios';
-        let currentApp = appHapp;
+        let currentApp = appKaringIos;
         
         // This will be replaced by the backend data via url params or templates if needed
         let userVpnKey = "vless://заглушка_пока_нет_подписки@server.com:443?type=tcp&security=none";
