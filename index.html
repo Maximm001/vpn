@@ -735,7 +735,7 @@
                         <span>СБП / Карта</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="margin-left:auto;"><path d="M9 18l6-6-6-6"/></svg>
                     </button>
-                    <button class="action-btn" style="justify-content:flex-start;gap:14px;">
+                    <button class="action-btn" onclick="tg.openTelegramLink('https://t.me/fossavpn_bot?start=topup_stars'); tg.close();" style="justify-content:flex-start;gap:14px;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
                         <span>Telegram Stars</span>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="margin-left:auto;"><path d="M9 18l6-6-6-6"/></svg>
@@ -1281,13 +1281,9 @@
             planPayBtn.textContent = 'Обработка...';
             planPayBtn.disabled = true;
 
-            const payload = JSON.stringify({
-                action: 'buy_with_balance',
-                tariff: activeTariffKey,
-                plan: selectedPlanKey
-            });
             setTimeout(() => {
-                tg.sendData(payload);
+                const payload = `buy_${activeTariffKey}_${selectedPlanKey}`;
+                tg.openTelegramLink(`https://t.me/fossavpn_bot?start=${payload}`);
                 tg.close();
             }, 400);
         });
@@ -1297,8 +1293,8 @@
             tg.HapticFeedback.impactOccurred('heavy');
             dailyActivateBtn.textContent = 'Обработка...';
             dailyActivateBtn.disabled = true;
-            const payload = JSON.stringify({ action: 'daily_activate' });
-            setTimeout(() => { tg.sendData(payload); tg.close(); }, 400);
+            setTimeout(() => {
+                tg.openTelegramLink(`https://t.me/fossavpn_bot?start=daily_activate`); tg.close(); }, 400);
         });
 
         // Daily: pause
@@ -1306,8 +1302,8 @@
             tg.HapticFeedback.impactOccurred('medium');
             dailyPauseBtn.textContent = 'Обработка...';
             dailyPauseBtn.disabled = true;
-            const payload = JSON.stringify({ action: 'daily_pause' });
-            setTimeout(() => { tg.sendData(payload); tg.close(); }, 400);
+            setTimeout(() => {
+                tg.openTelegramLink(`https://t.me/fossavpn_bot?start=daily_pause`); tg.close(); }, 400);
         });
 
 
