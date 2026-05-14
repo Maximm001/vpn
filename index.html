@@ -1905,8 +1905,7 @@
         });
 
         // API Payment Logic ──────────────────────────────
-        // ВАЖНО: Замените YOUR_SERVER_IP на IP вашего сервера!
-        const API_URL = 'http://103.75.126.175:8080/api/pay';
+        const API_URL = 'https://glen-during-viruses-want.trycloudflare.com/api/pay';
 
         async function processPayment(method, tariffKey = null, planKey = null, amount = 100) {
             if (!tg.initDataUnsafe.user) return;
