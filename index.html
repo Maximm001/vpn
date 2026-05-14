@@ -1905,7 +1905,36 @@
         });
 
         // API Payment Logic ──────────────────────────────
-        const API_URL = 'https://fossavpn.com/api/pay';
+        const API_URL = '/api/pay';
+        const USER_API_URL = '/api/user';
+
+        async function fetchUserData() {
+            if (!tg.initDataUnsafe.user) return;
+            const userId = tg.initDataUnsafe.user.id;
+            try {
+                const response = await fetch(`${USER_API_URL}?user_id=${userId}`);
+                const data = await response.json();
+                if (data && !data.error) {
+                    // Update global state
+                    if (data.vless_link) {
+                        userVpnKey = data.vless_link;
+                        vpnKeyEl.textContent = userVpnKey;
+                    }
+                    if (data.balance !== undefined) {
+                        const balEl = document.getElementById('balance-val');
+                        if (balEl) balEl.textContent = Math.floor(data.balance);
+                    }
+                    if (data.refs_count !== undefined) {
+                        const refCountEl = document.getElementById('ref-count');
+                        const refBadgeEl = document.getElementById('refs-badge');
+                        if (refCountEl) refCountEl.textContent = data.refs_count;
+                        if (refBadgeEl) refBadgeEl.textContent = data.refs_count;
+                    }
+                }
+            } catch (e) {
+                console.error("Failed to fetch user data:", e);
+            }
+        }
 
         async function processPayment(method, tariffKey = null, planKey = null, amount = 100) {
             if (!tg.initDataUnsafe.user) return;
@@ -1938,7 +1967,7 @@
                 if (method === "balance" && data.status === "success") {
                     tg.showAlert("✅ Успешно оплачено!");
                     closePlanModal();
-                    init(); // Refresh data
+                    await fetchUserData(); // Refresh data from server
                     return;
                 }
 
@@ -2037,6 +2066,17 @@
         closeQrBtn.addEventListener('click', () => {
             qrModal.classList.remove('active');
         });
+
+        async function init() {
+            vpnKeyEl.textContent = userVpnKey;
+            deviceCards.forEach(c => c.classList.remove('active'));
+            const activeCard = document.querySelector(`.device-card[data-device="${currentDevice}"]`);
+            if (activeCard) activeCard.classList.add('active');
+            renderApps(currentDevice);
+            
+            // Fetch real-time data from backend
+            await fetchUserData();
+        }
 
         init();
 
