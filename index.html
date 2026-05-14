@@ -1980,13 +1980,30 @@
 
         // Balance Top-up buttons
         document.getElementById('btn-topup-stars').addEventListener('click', () => {
-            processPayment('stars', null, null, 250);
+            const amount = prompt("Введите сумму пополнения (₽):", "250");
+            if (amount && !isNaN(amount) && amount >= 10) {
+                processPayment('stars', null, null, parseInt(amount));
+            } else if (amount) {
+                tg.showAlert("❌ Минимум 10 ₽");
+            }
         });
+
         document.getElementById('btn-topup-cryptobot').addEventListener('click', () => {
-            processPayment('cryptobot', null, null, 500);
+            const amount = prompt("Введите сумму пополнения (₽):", "500");
+            if (amount && !isNaN(amount) && amount >= 10) {
+                processPayment('cryptobot', null, null, parseInt(amount));
+            } else if (amount) {
+                tg.showAlert("❌ Минимум 10 ₽");
+            }
         });
+
         document.getElementById('btn-topup-sbp').addEventListener('click', () => {
-            processPayment('sbp', null, null, 1000);
+            const amount = prompt("Введите сумму пополнения (₽):", "1000");
+            if (amount && !isNaN(amount) && amount >= 10) {
+                processPayment('sbp', null, null, parseInt(amount));
+            } else if (amount) {
+                tg.showAlert("❌ Минимум 10 ₽");
+            }
         });
 
 
